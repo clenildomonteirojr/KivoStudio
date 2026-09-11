@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Kivo, seu espaço pessoal para finanças, estudos e produtividade." />
+    <title>Kivo Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=6" />
+  </head>
+  <body>
+    <div class="auth-screen" id="auth-screen">
+      <div class="auth-card">
+        <div class="brand"><div class="brand-mark">K</div><span>Kivo<span class="brand-dot">.</span></span></div>
+        <p class="eyebrow">SEU ESPAÇO PESSOAL</p>
+        <h1 id="auth-title">Entrar no Kivo</h1>
+        <p class="auth-subtitle" id="auth-subtitle">Acesse seus dados salvos com segurança.</p>
+        <form id="auth-form">
+          <label>Usuário<input name="username" required autocomplete="username" /></label>
+          <label class="register-field" hidden>Código de convite<input name="invite_code" autocomplete="off" /></label>
+          <label>Senha<input name="password" type="password" required minlength="6" autocomplete="current-password" /></label>
+          <label class="register-field" hidden>Confirmar senha<input name="confirm_password" type="password" minlength="6" autocomplete="new-password" /></label>
+          <button class="primary-button full-button" id="auth-submit" type="submit">Entrar</button>
+        </form>
+        <p class="auth-error" id="auth-error" role="alert"></p>
+        <button class="text-button auth-toggle" id="auth-toggle" type="button">Ainda não tenho uma conta</button>
+      </div>
+    </div>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegação principal">
+        <div class="brand">
+          <div class="brand-mark">K</div>
+          <span>Kivo<span class="brand-dot">.</span></span>
+        </div>
+
+        <div class="workspace-switcher">
+          <div class="avatar avatar-small">VS</div>
+          <div>
+            <strong>Meu espaço</strong>
+            <span>Workspace pessoal</span>
+          </div>
+          <button class="icon-button" aria-label="Trocar workspace">⌄</button>
+        </div>
+
+        <nav class="main-nav">
+          <p class="nav-label">Workspace</p>
+          <button class="nav-item active" data-view="finance" type="button">
+            <span class="nav-icon">↗</span><span>Finanças</span>
+          </button>
+          <button class="nav-item" data-view="kanban" type="button">
+            <span class="nav-icon">▦</span><span>Quadro Kanban</span>
+            <span class="nav-count">0</span>
+          </button>
+          <button class="nav-item" data-view="courses" type="button">
+            <span class="nav-icon">▤</span><span>Meus cursos</span>
+          </button>
+
+          <p class="nav-label nav-label-spaced">Sistema</p>
+          <button class="nav-item" data-view="settings" type="button">
+            <span class="nav-icon">⚙</span><span>Configurações</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="upgrade-card">
+            <div class="upgrade-icon">✦</div>
+            <strong>Seu espaço, do seu jeito</strong>
+            <span>Organize tudo em um só lugar.</span>
+          </div>
+          <div class="profile">
+            <div class="avatar">VS</div>
+            <div class="profile-copy"><strong>Olá, Vitória</strong><span>Plano pessoal</span></div>
+            <button class="logout-button" id="logout-button" type="button" aria-label="Desconectar" title="Desconectar">↪</button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="mobile-menu" aria-label="Abrir menu">☰</button>
+          <div class="breadcrumb"><span>Meu espaço</span><b>/</b><strong id="breadcrumb-title">Finanças</strong></div>
+          <div class="topbar-actions">
+            <button class="icon-button notification" aria-label="Notificações">♧<i></i></button>
+            <div class="topbar-avatar avatar">VS</div>
+          </div>
+        </header>
+
+        <section id="finance-view" class="view active-view">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow">SEGUNDA-FEIRA, 07 DE SETEMBRO DE 2026</p>
+              <h1>Visão geral <span class="wave">✦</span></h1>
+              <p class="subtitle">Tenha clareza sobre o seu dinheiro e seus próximos passos.</p>
+            </div>
+            <button class="primary-button" id="add-transaction-button"><span>＋</span> Adicionar lançamento</button>
+          </div>
+
+          <div class="finance-periods">
+            <button class="period-button active" type="button">Hoje</button>
+            <button class="period-button" type="button">Semana</button>
+            <button class="period-button" type="button">Mês</button>
+            <button class="period-button" type="button">3 meses</button>
+            <button class="period-button" type="button">6 meses</button>
+            <button class="period-button" type="button">1 ano</button>
+          </div>
+
+          <div class="stat-grid">
+            <article class="stat-card highlight">
+              <div class="stat-top"><span>Saldo disponível</span><span class="trend up">↗ 12,8%</span></div>
+              <strong class="money" id="balance-value">R$ 0,00</strong>
+              <div class="progress-track"><div class="progress-fill" style="width: 0%"></div></div>
+              <div class="stat-foot"><span>saldo acumulado</span><strong id="balance-income">R$ 0,00</strong></div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Entradas este mês</span><span class="trend up">↗ 4,2%</span></div>
+              <strong class="money" id="income-value">R$ 0,00</strong>
+              <div class="stat-caption"><span class="dot green"></span>Total de entradas</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Gastos este mês</span><span class="trend down">↘ 8,6%</span></div>
+              <strong class="money" id="expense-value">R$ 0,00</strong>
+              <div class="stat-caption"><span class="dot orange"></span>Total de gastos</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>Investimentos</span><span class="trend up">↗ 9,4%</span></div>
+              <strong class="money" id="investment-value">R$ 0,00</strong>
+              <div class="stat-caption"><span class="dot purple"></span>Total investido</div>
+            </article>
+          </div>
+
+          <div class="content-grid">
+            <article class="panel chart-panel">
+              <div class="panel-heading">
+                <div><h2>Fluxo financeiro</h2><p>Entradas e saídas ao longo do ano</p></div>
+                <select class="select-control" aria-label="Selecionar período"><option>2026</option><option>2025</option></select>
+              </div>
+              <div class="chart-legend"><span><i class="legend-dot income"></i>Entradas</span><span><i class="legend-dot expense"></i>Gastos</span></div>
+              <div class="chart-wrap">
+                <div class="y-axis"><span>8k</span><span>6k</span><span>4k</span><span>2k</span><span>0</span></div>
+                <div class="chart-area">
+                  <div class="grid-line line-1"></div><div class="grid-line line-2"></div><div class="grid-line line-3"></div><div class="grid-line line-4"></div><div class="grid-line line-5"></div>
+                  <svg viewBox="0 0 720 210" preserveAspectRatio="none" class="line-chart" aria-label="Gráfico anual de fluxo financeiro">
+                    <defs><linearGradient id="incomeFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#6b8cff" stop-opacity=".22"/><stop offset="100%" stop-color="#6b8cff" stop-opacity="0"/></linearGradient></defs>
+                    <path class="area-path" d="M0 105 C45 92 63 83 120 90 S180 75 240 77 S300 82 360 74 S425 84 480 62 S550 67 600 52 S670 43 720 34 V210 H0 Z"/>
+                    <path class="income-line" d="M0 105 C45 92 63 83 120 90 S180 75 240 77 S300 82 360 74 S425 84 480 62 S550 67 600 52 S670 43 720 34"/>
+                    <path class="expense-line" d="M0 170 C42 163 72 158 120 164 S183 145 240 158 S300 147 360 151 S420 127 480 143 S540 121 600 130 S677 113 720 118"/>
+                  </svg>
+                  <div class="x-axis"><span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span><span>Nov</span><span>Dez</span></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel goals-panel">
+              <div class="panel-heading"><div><h2>Metas financeiras</h2><p>Acompanhe seus objetivos</p></div><button class="text-button">Ver todas <span>→</span></button></div>
+              <div class="goal-list">
+                <div class="goal"><div class="goal-icon blue">⌂</div><div class="goal-info"><div><strong>Reserva de emergência</strong><span>65%</span></div><div class="mini-track"><i style="width:65%"></i></div><small>R$ 6.500 de R$ 10.000</small></div></div>
+                <div class="goal"><div class="goal-icon violet">◈</div><div class="goal-info"><div><strong>Viagem de fim de ano</strong><span>42%</span></div><div class="mini-track violet-track"><i style="width:42%"></i></div><small>R$ 2.100 de R$ 5.000</small></div></div>
+                <div class="goal"><div class="goal-icon orange">◇</div><div class="goal-info"><div><strong>Novo notebook</strong><span>78%</span></div><div class="mini-track orange-track"><i style="width:78%"></i></div><small>R$ 3.900 de R$ 5.000</small></div></div>
+              </div>
+              <button class="outline-button full-button" id="create-goal-button">＋ Criar nova meta</button>
+            </article>
+          </div>
+
+          <div class="content-grid lower-grid">
+            <article class="panel transactions-panel">
+              <div class="panel-heading"><div><h2>Movimentações recentes</h2><p>Seus últimos lançamentos</p></div><button class="text-button">Ver histórico <span>→</span></button></div>
+              <div class="transaction-list" id="transaction-list"><p class="empty-state">Nenhum lançamento registrado ainda.</p></div>
+            </article>
+            <article class="panel quick-panel">
+              <div class="panel-heading"><div><h2>Resumo prático</h2><p>Registre o que entra e o que sai.</p></div></div>
+              <button class="quick-action" id="quick-expense" type="button"><span class="quick-action-icon expense-action">−</span><span><strong>Adicionar gasto</strong><small>Registre uma nova despesa</small></span><b>→</b></button>
+              <button class="quick-action" id="quick-income" type="button"><span class="quick-action-icon income-action">＋</span><span><strong>Nova entrada</strong><small>Registre uma receita ou salário</small></span><b>→</b></button>
+              <button class="quick-action" data-action="investment" type="button"><span class="quick-action-icon invest-action">↗</span><span><strong>Novo investimento</strong><small>Acompanhe seu patrimônio</small></span><b>→</b></button>
+            </article>
+          </div>
+        </section>
+
+        <section id="kanban-view" class="view">
+          <div class="page-heading"><div><p class="eyebrow">PRODUTIVIDADE</p><h1>Quadro Kanban</h1><p class="subtitle">Transforme planos em progresso, uma tarefa por vez.</p></div><button class="primary-button" id="add-task-button"><span>＋</span> Nova tarefa</button></div>
+          <div class="kanban-toolbar"><div class="board-tabs"><button class="board-tab active">Meu fluxo</button><button class="board-tab">Projetos</button><button class="board-tab">Arquivo</button></div><div class="toolbar-actions"><button class="filter-button">☷ Filtros <span>2</span></button><button class="icon-button">⌕</button><button class="icon-button">•••</button></div></div>
+          <div class="kanban-board">
+            <div class="kanban-column"><div class="column-heading"><span class="column-dot todo-dot"></span><h3>A fazer</h3><span class="task-count">0</span></div><div class="task-list" data-status="todo"></div><button class="add-card-button">＋ Adicionar cartão</button></div>
+            <div class="kanban-column"><div class="column-heading"><span class="column-dot done-dot"></span><h3>Concluído</h3><span class="task-count">0</span></div><div class="task-list" data-status="done"></div><button class="add-card-button">＋ Adicionar cartão</button></div>
+          </div>
+        </section>
+
+        <section id="courses-view" class="view">
+          <div class="page-heading"><div><p class="eyebrow">APRENDIZADO</p><h1>Meus cursos</h1><p class="subtitle">Acompanhe seu ritmo e não perca nenhuma entrega.</p></div><button class="primary-button" data-action="add-course"><span>＋</span> Adicionar curso</button></div>
+          <div class="course-summary"><div><span class="summary-label">Progresso geral</span><strong>64%</strong></div><div class="summary-progress"><i style="width:64%"></i></div><span class="summary-detail">12 de 19 módulos concluídos</span></div>
+          <div class="course-grid"><article class="course-card"><div class="course-cover cover-blue"><span>DEV</span><b>⌘</b></div><div class="course-body"><div class="course-meta"><span class="tag tag-blue">Em andamento</span><span>64%</span></div><h3>Desenvolvimento Web Moderno</h3><p>Origamid · 19 módulos</p><div class="mini-track"><i style="width:64%"></i></div><div class="course-footer"><span>Próxima aula: Hooks</span><button class="round-arrow">→</button></div></div></article><article class="course-card"><div class="course-cover cover-purple"><span>UX</span><b>✦</b></div><div class="course-body"><div class="course-meta"><span class="tag tag-purple">Em andamento</span><span>38%</span></div><h3>Fundamentos de UI/UX</h3><p>Alura · 12 módulos</p><div class="mini-track violet-track"><i style="width:38%"></i></div><div class="course-footer"><span>Próxima aula: Tipografia</span><button class="round-arrow">→</button></div></div></article><article class="course-card"><div class="course-cover cover-orange"><span>ING</span><b>Aa</b></div><div class="course-body"><div class="course-meta"><span class="tag tag-orange">Em andamento</span><span>82%</span></div><h3>Inglês para conversação</h3><p>Fluency Academy · 24 aulas</p><div class="mini-track orange-track"><i style="width:82%"></i></div><div class="course-footer"><span>Próxima aula: Present perfect</span><button class="round-arrow">→</button></div></div></article></div>
+        </section>
+
+        <section id="settings-view" class="view">
+          <div class="page-heading"><div><p class="eyebrow">PREFERÊNCIAS</p><h1>Configurações</h1><p class="subtitle">Personalize seu espaço de trabalho.</p></div></div>
+          <div class="settings-panel panel"><div class="settings-row"><div><h3>Perfil pessoal</h3><p>Nome, avatar e informações da sua conta.</p></div><button class="outline-button" data-action="edit-profile">Editar perfil</button></div><div class="settings-row"><div><h3>Notificações</h3><p>Receba lembretes sobre tarefas e movimentações.</p></div><label class="toggle"><input type="checkbox" checked /><span></span></label></div><div class="settings-row"><div><h3>Tema escuro</h3><p>O tema noturno ajuda você a manter o foco.</p></div><label class="toggle"><input type="checkbox" checked /><span></span></label></div></div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="transaction-modal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-heading"><div><p class="eyebrow">NOVO LANÇAMENTO</p><h2 id="modal-title">Adicionar lançamento</h2></div><button class="modal-close" data-close-modal>×</button></div><form id="transaction-form"><label>Descrição<input name="description" required placeholder="Ex: Conta de luz" /></label><div class="form-row"><label>Tipo<select name="type"><option value="expense">Gasto</option><option value="income">Entrada</option><option value="investment">Investimento</option></select></label><label>Valor<input name="amount" required type="number" min="0.01" step="0.01" placeholder="0,00" /></label></div><div class="form-row"><label>Categoria<select name="category"><option>Moradia</option><option>Alimentação</option><option>Transporte</option><option>Saúde</option><option>Educação</option><option>Lazer</option><option>Investimentos</option><option>Outros</option></select></label><label>Data<input name="transaction_date" type="date" required /></label></div><label>Observação<textarea name="note" rows="3" placeholder="Adicione um contexto (opcional)"></textarea></label><button class="primary-button full-button" type="submit">Salvar lançamento</button></form></div>
+    </div>
+    <div class="modal-backdrop" id="task-modal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="task-modal-title"><div class="modal-heading"><div><p class="eyebrow" id="task-modal-eyebrow">NOVO CARTÃO</p><h2 id="task-modal-title">Adicionar tarefa</h2></div><button class="modal-close" data-close-task-modal>×</button></div><form id="task-form"><label>Nome da tarefa<input name="title" required placeholder="Ex: Revisar aula de JavaScript" /></label><div class="form-row"><label>Categoria<select name="category"><option value="blue">Planejamento</option><option value="purple">Estudos</option><option value="green">Finanças</option><option value="orange">Pessoal</option><option value="pink">Projeto</option></select></label><label>Prazo<select name="deadline"><option>Hoje</option><option>Amanhã</option><option>Esta semana</option></select></label></div><button class="primary-button full-button" id="task-submit-button" type="submit">Adicionar ao quadro</button></form></div>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js?v=6"></script>
+  </body>
+</html>
