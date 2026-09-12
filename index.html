@@ -98,12 +98,29 @@
           </div>
 
           <div class="finance-periods">
-            <button class="period-button active" type="button">Hoje</button>
-            <button class="period-button" type="button">Semana</button>
-            <button class="period-button" type="button">Mês</button>
-            <button class="period-button" type="button">3 meses</button>
-            <button class="period-button" type="button">6 meses</button>
-            <button class="period-button" type="button">1 ano</button>
+            <button class="period-button" data-period="today" type="button">Hoje</button>
+            <button class="period-button" data-period="week" type="button">Semana</button>
+            <button class="period-button active" data-period="month" type="button">Mês</button>
+            <button class="period-button" data-period="3months" type="button">3 meses</button>
+            <button class="period-button" data-period="6months" type="button">6 meses</button>
+            <button class="period-button" data-period="year" type="button">1 ano</button>
+          </div>
+          <div class="finance-filters">
+            <label>
+              <span>Tipo</span>
+              <select id="finance-type-filter">
+                <option value="all">Todos</option>
+                <option value="income">Entradas</option>
+                <option value="expense">Gastos</option>
+                <option value="investment">Investimentos</option>
+              </select>
+            </label>
+            <label>
+              <span>Categoria</span>
+              <select id="finance-category-filter">
+                <option value="all">Todas</option>
+              </select>
+            </label>
           </div>
 
           <div class="stat-grid">
@@ -130,25 +147,80 @@
             </article>
           </div>
 
+          <div class="content-grid lower-grid">
+            <article class="panel">
+              <div class="panel-heading">
+                <div><h2>Resumo por categoria</h2><p>Onde o dinheiro está indo</p></div>
+              </div>
+              <div class="account-list" id="category-list"><p class="empty-state">Nenhuma categoria registrada ainda.</p></div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div><h2>Resumo do mês</h2><p>Saldo útil para controlar hoje</p></div>
+              </div>
+              <div class="account-list" id="account-summary"><p class="empty-state">Ainda não há dados do mês.</p></div>
+            </article>
+          </div>
+
+          <div class="content-grid lower-grid">
+            <article class="panel">
+              <div class="panel-heading">
+                <div><h2>Minhas contas</h2><p>Onde o dinheiro está alocado</p></div>
+              </div>
+              <div class="account-list" id="accounts-panel"><p class="empty-state">Ainda não há contas cadastradas.</p></div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div><h2>Carteira</h2><p>Disponível para uso imediato</p></div>
+              </div>
+              <div class="account-list" id="wallet-panel"><p class="empty-state">Sua carteira ainda está vazia.</p></div>
+            </article>
+          </div>
+
+          <div class="content-grid lower-grid">
+            <article class="panel">
+              <div class="panel-heading">
+                <div><h2>Orçamento do mês</h2><p>Compare limites e gastos reais</p></div>
+              </div>
+              <div class="budget-list" id="budget-panel"><p class="empty-state">Ainda não há orçamento definido.</p></div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div><h2>Metas do mês</h2><p>O que precisa ser poupado</p></div>
+              </div>
+              <div class="budget-list" id="goals-panel"><p class="empty-state">Nenhuma meta registrada para este mês.</p></div>
+            </article>
+          </div>
+
+          <div class="content-grid lower-grid">
+            <article class="panel">
+              <div class="panel-heading">
+                <div><h2>Investimentos</h2><p>Patrimônio aplicado e rendimento</p></div>
+              </div>
+              <div class="account-list" id="investments-panel"><p class="empty-state">Seu patrimônio em investimentos ainda não foi informado.</p></div>
+            </article>
+            <article class="panel">
+              <div class="panel-heading">
+                <div><h2>Rendimento</h2><p>Quanto seu dinheiro está gerando</p></div>
+              </div>
+              <div class="account-list" id="yield-panel"><p class="empty-state">Ainda não há rendimento calculado.</p></div>
+            </article>
+          </div>
+
           <div class="content-grid">
             <article class="panel chart-panel">
               <div class="panel-heading">
-                <div><h2>Fluxo financeiro</h2><p>Entradas e saídas ao longo do ano</p></div>
-                <select class="select-control" aria-label="Selecionar período"><option>2026</option><option>2025</option></select>
+                <div><h2>Tendência mensal</h2><p>Comparativo real dos últimos 6 meses</p></div>
               </div>
-              <div class="chart-legend"><span><i class="legend-dot income"></i>Entradas</span><span><i class="legend-dot expense"></i>Gastos</span></div>
-              <div class="chart-wrap">
-                <div class="y-axis"><span>8k</span><span>6k</span><span>4k</span><span>2k</span><span>0</span></div>
-                <div class="chart-area">
-                  <div class="grid-line line-1"></div><div class="grid-line line-2"></div><div class="grid-line line-3"></div><div class="grid-line line-4"></div><div class="grid-line line-5"></div>
-                  <svg viewBox="0 0 720 210" preserveAspectRatio="none" class="line-chart" aria-label="Gráfico anual de fluxo financeiro">
-                    <defs><linearGradient id="incomeFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#6b8cff" stop-opacity=".22"/><stop offset="100%" stop-color="#6b8cff" stop-opacity="0"/></linearGradient></defs>
-                    <path class="area-path" d="M0 105 C45 92 63 83 120 90 S180 75 240 77 S300 82 360 74 S425 84 480 62 S550 67 600 52 S670 43 720 34 V210 H0 Z"/>
-                    <path class="income-line" d="M0 105 C45 92 63 83 120 90 S180 75 240 77 S300 82 360 74 S425 84 480 62 S550 67 600 52 S670 43 720 34"/>
-                    <path class="expense-line" d="M0 170 C42 163 72 158 120 164 S183 145 240 158 S300 147 360 151 S420 127 480 143 S540 121 600 130 S677 113 720 118"/>
-                  </svg>
-                  <div class="x-axis"><span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span><span>Nov</span><span>Dez</span></div>
-                </div>
+              <div class="trend-summary" id="trend-summary"></div>
+              <div class="trend-chart" id="trend-chart" aria-label="Gráfico de tendência mensal"></div>
+              <div class="comparison-table-wrap">
+                <table class="report-table" id="comparison-panel">
+                  <thead>
+                    <tr><th>Mês</th><th>Entradas</th><th>Gastos</th><th>Saldo</th><th>Δ</th></tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
               </div>
             </article>
 
@@ -169,10 +241,35 @@
               <div class="transaction-list" id="transaction-list"><p class="empty-state">Nenhum lançamento registrado ainda.</p></div>
             </article>
             <article class="panel quick-panel">
+              <div class="panel-heading"><div><h2>Histórico do período</h2><p>Resumo de movimentações</p></div></div>
+              <div class="account-list" id="history-panel"><p class="empty-state">Selecione um período para ver o histórico.</p></div>
+            </article>
+            <article class="panel quick-panel">
               <div class="panel-heading"><div><h2>Resumo prático</h2><p>Registre o que entra e o que sai.</p></div></div>
               <button class="quick-action" id="quick-expense" type="button"><span class="quick-action-icon expense-action">−</span><span><strong>Adicionar gasto</strong><small>Registre uma nova despesa</small></span><b>→</b></button>
               <button class="quick-action" id="quick-income" type="button"><span class="quick-action-icon income-action">＋</span><span><strong>Nova entrada</strong><small>Registre uma receita ou salário</small></span><b>→</b></button>
               <button class="quick-action" data-action="investment" type="button"><span class="quick-action-icon invest-action">↗</span><span><strong>Novo investimento</strong><small>Acompanhe seu patrimônio</small></span><b>→</b></button>
+              <div class="panel-divider"></div>
+              <div class="panel-heading subheading"><div><h2>Despesas recorrentes</h2><p>Gastos que se repetem</p></div></div>
+              <div class="account-list" id="recurring-panel"><p class="empty-state">Nenhuma despesa recorrente detectada.</p></div>
+            </article>
+          </div>
+
+          <div class="content-grid lower-grid">
+            <article class="panel">
+              <div class="panel-heading">
+                <div><h2>Relatório mensal</h2><p>Gastos por categoria no período</p></div>
+              </div>
+              <div class="report-table-wrap">
+                <table class="report-table" id="monthly-report-panel">
+                  <thead>
+                    <tr><th>Categoria</th><th>Gasto</th><th>%</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td colspan="3" class="empty-state">Ainda não há relatório para este período.</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </article>
           </div>
         </section>

@@ -238,12 +238,43 @@ class KivoHandler(http.server.SimpleHTTPRequestHandler):
         self.send_json({"error": "Rota não encontrada."}, 404)
 
     def do_PATCH(self):
-        if not self.path.startswith("/api/tasks/"):
-            self.send_json({"error": "Rota não encontrada."}, 404)
-            return
         user = self.current_user()
         if not user:
             self.send_json({"error": "Não autenticado."}, 401)
+            return
+
+        if self.path.startswith("/api/transactions/"):
+            transaction_id = self.path.rsplit("/", 1)[-1]
+            data = self.read_json()
+            description = str(data.get("description", "")).strip()
+            transaction_type = data.get("type", "")
+            try:
+                amount = float(data.get("amount", 0))
+            except (TypeError, ValueError):
+                amount = 0
+            if not description or transaction_type not in ("income", "expense", "investment") or amount <= 0:
+                self.send_json({"error": "Informe descrição, tipo e um valor válido."}, 400)
+                return
+            connection = database()
+            connection.execute(
+                "UPDATE transactions SET description = ?, type = ?, amount = ?, category = ?, note = ?, transaction_date = ? WHERE id = ? AND user_id = ?",
+                (
+                    description,
+                    transaction_type,
+                    amount,
+                    data.get("category", "Outros").strip(),
+                    data.get("note", "").strip(),
+                    data.get("transaction_date") or __import__("datetime").date.today().isoformat(),
+                    transaction_id,
+                    user["id"],
+                ),
+            )
+            connection.commit()
+            self.send_json({"ok": True})
+            return
+
+        if not self.path.startswith("/api/tasks/"):
+            self.send_json({"error": "Rota não encontrada."}, 404)
             return
         task_id = self.path.rsplit("/", 1)[-1]
         data = self.read_json()
