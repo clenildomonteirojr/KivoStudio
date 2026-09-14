@@ -115,6 +115,54 @@
    `).join("");
  }
 
+ function renderCashAlert(transactions = []) {
+   const alert = document.querySelector("#cash-alert");
+   if (!alert) return;
+
+   if (!transactions.length) {
+     alert.className = "cash-alert hidden";
+     alert.innerHTML = "";
+     return;
+   }
+
+   const totals = transactions.reduce((result, transaction) => {
+     const type = transaction.type || "expense";
+     result[type] = (result[type] || 0) + Number(transaction.amount || 0);
+     return result;
+   }, { income: 0, expense: 0, investment: 0 });
+
+   const netMovement = totals.income - totals.expense - totals.investment;
+   const reserveTarget = Math.max(totals.income * 0.2, 0);
+   const averageLastMonths = financeTransactions.length ? financeTransactions.slice(-3).reduce((result, transaction) => {
+     const type = transaction.type || "expense";
+     result[type] = (result[type] || 0) + Number(transaction.amount || 0);
+     return result;
+   }, { income: 0, expense: 0, investment: 0 }) : { income: totals.income, expense: totals.expense, investment: totals.investment };
+   const projectedBalance = (averageLastMonths.income / Math.max(1, Math.min(financeTransactions.length ? Math.min(financeTransactions.length, 3) : 1, 3))) - (averageLastMonths.expense / Math.max(1, Math.min(financeTransactions.length ? Math.min(financeTransactions.length, 3) : 1, 3))) - averageLastMonths.investment;
+   const isCritical = netMovement < 0 || projectedBalance < 0;
+   const isWarning = netMovement < reserveTarget || projectedBalance < reserveTarget;
+
+   if (!isCritical && !isWarning) {
+     alert.className = "cash-alert hidden";
+     alert.innerHTML = "";
+     return;
+   }
+
+   const statusText = isCritical ? "Crítico" : "Atenção";
+   const severityClass = isCritical ? "critical" : "warning";
+   const currentShortfall = Math.min(netMovement, projectedBalance, reserveTarget || netMovement);
+   const difference = Math.abs(isCritical ? Math.min(netMovement, projectedBalance) : reserveTarget - Math.min(netMovement, projectedBalance));
+
+   alert.className = `cash-alert ${severityClass}`;
+   alert.innerHTML = `
+     <div>
+       <strong>${statusText}: caixa projetado ${isCritical ? "negativo" : "abaixo da reserva"}</strong>
+       <small>Saldo atual ${money(netMovement)} · meta de segurança ${money(reserveTarget)} · projeção ${money(projectedBalance)}</small>
+     </div>
+     <span class="alert-pill">${isCritical ? "Reduzir gastos" : "Revisar fluxo"}</span>
+   `;
+ }
+
  function renderHistoryPanel(transactions = []) {
    const panel = document.querySelector("#history-panel");
    if (!panel) return;
@@ -374,6 +422,35 @@
      .reduce((sum, [, value]) => sum + value, 0);
  
    const categories = Object.keys(categoryTotals);
+   const alerts = categories
+     .map((label) => {
+       const spent = categoryTotals[label] || 0;
+       const limit = budgetProfile[label] || Math.max((Object.values(categoryTotals).reduce((sum, value) => sum + value, 0) / Math.max(categories.length, 1)) * 0.8, 250);
+       const status = spent > limit ? "Acima" : spent > limit * 0.75 ? "Quase" : "Dentro";
+       return { label, spent, limit, status };
+     })
+     .filter(({ status }) => status !== "Dentro")
+     .sort((left, right) => right.spent - left.spent);
+
+   const alertMarkup = alerts.length ? `
+     <div class="account-row" style="padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+       <div class="account-meta">
+         <span class="account-color ${alerts[0].status === "Acima" ? "orange" : "blue"}"></span>
+         <div><strong>Alertas de orçamento</strong><small>${alerts.length} categoria(s) em atenção</small></div>
+       </div>
+       <strong>${alerts[0].status === "Acima" ? "Atenção" : "Monitorar"}</strong>
+     </div>
+     ${alerts.slice(0, 3).map(({ label, spent, limit, status }) => `
+       <div class="budget-row">
+         <div>
+           <strong>${label}</strong>
+           <small>${money(spent)} / ${money(limit)} · ${status}</small>
+         </div>
+         <span class="status ${status === "Acima" ? "danger" : "warn"}">${status}</span>
+       </div>
+     `).join("")}
+   ` : "";
+
    const budgetRows = categories.map((label) => {
      const spent = categoryTotals[label] || 0;
      const limit = budgetProfile[label] || Math.max((Object.values(categoryTotals).reduce((sum, value) => sum + value, 0) / Math.max(categories.length, 1)) * 0.8, 250);
@@ -408,7 +485,7 @@
    `;
  
    budgetPanel.innerHTML = budgetRows.length
-     ? `${summary}${budgetRows.join("")}`
+     ? `${alertMarkup}${summary}${budgetRows.join("")}`
      : '<p class="empty-state">Ainda não há gastos para comparar com o orçamento.</p>';
  }
 
@@ -673,6 +750,7 @@
    renderBudgetSummary(visibleTransactions);
    renderSavingsGoals(visibleTransactions);
    renderInvestmentSummary(visibleTransactions);
+   renderCashAlert(visibleTransactions);
    renderRecurringExpenses(financeTransactions);
    renderHistoryPanel(visibleTransactions);
    renderMonthlyReport(visibleTransactions);

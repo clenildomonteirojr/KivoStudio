@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=6" />
+    <link rel="stylesheet" href="styles.css?v=8" />
   </head>
   <body>
     <div class="auth-screen" id="auth-screen">
@@ -122,6 +122,8 @@
               </select>
             </label>
           </div>
+
+          <div class="cash-alert hidden" id="cash-alert" aria-live="polite"></div>
 
           <div class="stat-grid">
             <article class="stat-card highlight">
@@ -303,6 +305,6 @@
       <div class="modal" role="dialog" aria-modal="true" aria-labelledby="task-modal-title"><div class="modal-heading"><div><p class="eyebrow" id="task-modal-eyebrow">NOVO CARTÃO</p><h2 id="task-modal-title">Adicionar tarefa</h2></div><button class="modal-close" data-close-task-modal>×</button></div><form id="task-form"><label>Nome da tarefa<input name="title" required placeholder="Ex: Revisar aula de JavaScript" /></label><div class="form-row"><label>Categoria<select name="category"><option value="blue">Planejamento</option><option value="purple">Estudos</option><option value="green">Finanças</option><option value="orange">Pessoal</option><option value="pink">Projeto</option></select></label><label>Prazo<select name="deadline"><option>Hoje</option><option>Amanhã</option><option>Esta semana</option></select></label></div><button class="primary-button full-button" id="task-submit-button" type="submit">Adicionar ao quadro</button></form></div>
     </div>
     <div class="toast" id="toast" role="status"></div>
-    <script src="app.js?v=6"></script>
+    <script src="app.js?v=7"></script>
   </body>
 </html>
